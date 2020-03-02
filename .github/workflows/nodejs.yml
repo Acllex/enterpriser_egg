@@ -24,15 +24,15 @@ jobs:
         REMOTE_USER: "root"
         TARGET: "/root/nodejs/enterpriser_egg"
         
-#     - name: start server
-#       uses: appleboy/ssh-action@master
-#       with:
-#           host: '39.105.220.73'
-#           username: 'root'
-#           key: ${{ secrets.ALIYUN }}
-#           script: |
-#             cd /root/nodejs/enterpriser_egg
-#             npm install
-#             npm run stop
-#             npm run build
-#             npm run start
+    - name: start server
+      uses: appleboy/ssh-action@master
+      with:
+          host: '39.105.220.73'
+          username: 'root'
+          key: ${{ secrets.ALIYUN }}
+          script: |
+            cd /root/nodejs/enterpriser_egg
+            npm install
+            npm run stop
+            npm run build
+            npm run start
