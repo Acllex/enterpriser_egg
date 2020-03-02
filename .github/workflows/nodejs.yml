@@ -1,0 +1,46 @@
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm run build --if-present
+    - run: npm test
+      env:
+        CI: true
+    - name: Deploy
+      uses: easingthemes/ssh-deploy@v2.0.8
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.PI }}
+        ARGS: "-avz --delete"
+        SOURCE: "/" 
+        REMOTE_HOST: "acllex.f3322.net"
+        REMOTE_USER: "root"
+        TARGET: "/home/pi/nodejs/enterpriser_egg"
+        
+    - name: start server
+      uses: appleboy/ssh-action@master
+      with:
+          host: 'acllex.f3322.net'
+          username: 'root'
+          key: ${{ secrets.PI }}
+          script: |
+            cd /home/pi/nodejs/enterpriser_egg
+            npm install
+            npm run stop
+            npm run build
+            npm run start
