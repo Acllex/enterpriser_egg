@@ -25,21 +25,21 @@ jobs:
     - name: Deploy
       uses: easingthemes/ssh-deploy@v2.0.8
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.PI }}
+        SSH_PRIVATE_KEY: ${{ secrets.ALIYUN }}
         ARGS: "-avz --delete"
         SOURCE: "/" 
-        REMOTE_HOST: "acllex.f3322.net"
+        REMOTE_HOST: "39.105.220.73"
         REMOTE_USER: "root"
-        TARGET: "/home/pi/nodejs/enterpriser_egg"
+        TARGET: "/root/nodejs/enterpriser_egg"
         
     - name: start server
       uses: appleboy/ssh-action@master
       with:
-          host: 'acllex.f3322.net'
+          host: '39.105.220.73'
           username: 'root'
-          key: ${{ secrets.PI }}
+          key: ${{ secrets.ALIYUN }}
           script: |
-            cd /home/pi/nodejs/enterpriser_egg
+            cd /root/nodejs/enterpriser_egg
             npm install
             npm run stop
             npm run build
